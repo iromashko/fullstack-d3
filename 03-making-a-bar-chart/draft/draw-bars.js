@@ -30,6 +30,12 @@ async function drawBars() {
       .attr('height', dimensions.height)
       .style('border', '1px solid');
 
+    wrapper
+      .attr('role', 'figure')
+      .attr('tabindex', '0')
+      .append('title')
+      .text(metric);
+
     const bounds = wrapper
       .append('g')
       .style(
@@ -57,8 +63,18 @@ async function drawBars() {
       .range([dimensions.boundedHeight, 0])
       .nice();
 
-    const binsGroup = bounds.append('g');
-    const binGroups = binsGroup.selectAll('g').data(bins).join('g');
+    const binsGroup = bounds
+      .append('g')
+      .attr('tabindex', '0')
+      .attr('role', 'list')
+      .attr('aria-label', 'histogram bars');
+
+    const binGroups = binsGroup
+      .selectAll('g')
+      .data(bins)
+      .join('g')
+      .attr('tabindex', '0')
+      .attr('role', 'listitem')
 
     const barPadding = 1;
     const barRects = binGroups
@@ -128,9 +144,9 @@ async function drawBars() {
     'windBearing',
     'temperatureMin',
     'temperatureMax',
-    'visibility'
+    'visibility',
   ];
 
-  metrics.forEach(drawHistogram)
+  metrics.forEach(drawHistogram);
 }
 drawBars();
